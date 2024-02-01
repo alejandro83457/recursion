@@ -93,6 +93,15 @@ class LinkedList {
     }
     last.setNextNode(null);
   }
+  contains(value) {
+    if (!this.#head) return false;
+    let curr = this.#head;
+    while (curr) {
+      if (curr.value === value) return true;
+      curr = curr.nextNode;
+    }
+    return false;
+  }
   toString() {
     let str = '';
     let currNode = this.#head;
@@ -123,3 +132,5 @@ console.log(list.toString());
 
 list.append(5);
 console.log(list.toString());
+
+console.log('Contains 2?', list.contains(2));
