@@ -76,6 +76,23 @@ class LinkedList {
     }
     return curr.value;
   }
+  pop() {
+    // if head is empty
+    if (!this.#head) return;
+    // if list has one node
+    if (!this.#head.nextNode) {
+      this.#head = null;
+      return;
+    }
+    // if list has more than one node
+    let curr = this.#head;
+    let last = null;
+    while (curr.nextNode) {
+      last = curr;
+      curr = curr.nextNode;
+    }
+    last.setNextNode(null);
+  }
   toString() {
     let str = '';
     let currNode = this.#head;
@@ -92,9 +109,17 @@ let list = new LinkedList();
 list.append(1);
 list.append(2);
 list.append(3);
-list.append(4);
+list.prepend(0);
+
 console.log(list.toString());
 console.log('Size:', list.size);
 console.log('Head:', list.head());
 console.log('Tail:', list.tail());
 console.log('Index 0:', list.at(0));
+
+console.log('Calling pop()!');
+list.pop();
+console.log(list.toString());
+
+list.append(5);
+console.log(list.toString());
