@@ -39,8 +39,5 @@ function merge(left, right) {
   return sorted;
 }
 
-console.log(mergeSort([2, 1]));
-console.log(mergeSort([3, 2, 1]));
-console.log(mergeSort([4, 3, 2, 1]));
-console.log(mergeSort([5, 4, 3, 2, 1]));
-console.log(mergeSort([6, 5, 4, 3, 2, 1]));
+let sorted = mergeSort([3, 2, 1, 13, 8, 5, 0, 1]);
+console.log(sorted);
