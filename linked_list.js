@@ -52,14 +52,27 @@ class LinkedList {
     return count;
   }
   head() {
+    // if head is not empty
     if (this.#head) return this.#head.value;
     else return null;
   }
   tail() {
+    // if head is empty
     if (!this.#head) return null;
     let curr = this.#head;
+    // head is not empty
     while (curr.nextNode) {
       curr = curr.nextNode;
+    }
+    return curr.value;
+  }
+  at(index) {
+    // if index is out of range
+    if (index > this.size - 1) return null;
+    let curr = this.#head;
+    while (index > 0) {
+      curr = curr.nextNode;
+      index--;
     }
     return curr.value;
   }
@@ -79,7 +92,9 @@ let list = new LinkedList();
 list.append(1);
 list.append(2);
 list.append(3);
+list.append(4);
 console.log(list.toString());
 console.log('Size:', list.size);
 console.log('Head:', list.head());
 console.log('Tail:', list.tail());
+console.log('Index 0:', list.at(0));
