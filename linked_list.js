@@ -51,6 +51,18 @@ class LinkedList {
     }
     return count;
   }
+  head() {
+    if (this.#head) return this.#head.value;
+    else return null;
+  }
+  tail() {
+    if (!this.#head) return null;
+    let curr = this.#head;
+    while (curr.nextNode) {
+      curr = curr.nextNode;
+    }
+    return curr.value;
+  }
   toString() {
     let str = '';
     let currNode = this.#head;
@@ -64,5 +76,10 @@ class LinkedList {
 }
 
 let list = new LinkedList();
+list.append(1);
+list.append(2);
+list.append(3);
 console.log(list.toString());
 console.log('Size:', list.size);
+console.log('Head:', list.head());
+console.log('Tail:', list.tail());
