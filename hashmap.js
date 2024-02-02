@@ -21,15 +21,26 @@ class HashMap {
   set(key, value) {
     // generate an index using hash and %
     let index = this.hash(key) % this.#map.length;
-    if (this.#cap / this.#map.length >= this.#load) this.increaseCap();
-    // if bucket is taken
-    if (!this.#map[index]) {
-      this.#cap++;
-    }
+    // if we surpass our load
+    if (this.#cap / this.#map.length >= this.#load) this.#increaseCap();
+    // if bucket is not taken
+    if (!this.#map[index]) this.#cap++;
     this.#map[index] = { key, value };
   }
 
-  increaseCap() {
+  get(key) {
+    let index = this.hash(key) % this.#map.length;
+    if (!this.#map[index]) return false;
+    return this.#map[index].key === key ? this.#map[index].value : false;
+  }
+
+  has(key) {
+    let index = this.hash(key) % this.#map.length;
+    if (!this.#map[index]) return false;
+    return this.#map[index].key === key ? true : false;
+  }
+
+  #increaseCap() {
     let temp = Array(this.#map.length * 2);
     for (let el of this.#map) {
       if (el) {
@@ -79,3 +90,5 @@ map.set('rodck', 24);
 map.set('padper', 25);
 
 map.print();
+console.log(map.get('sedt'));
+console.log(map.has('sedt'));
