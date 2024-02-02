@@ -44,9 +44,19 @@ class HashMap {
     let index = this.hash(key) % this.#map.length;
     if (this.#map[index]) {
       this.#map[index] = undefined;
+      this.#cap--;
       return true;
     }
     return false;
+  }
+
+  length() {
+    return this.#cap;
+  }
+
+  clear() {
+    this.#map = Array(16);
+    this.#cap = 0;
   }
 
   #increaseCap() {
@@ -99,7 +109,7 @@ map.set('monitor', 14);
 // map.set('padper', 25);
 
 map.print();
-console.log(map.get('sedt'));
-console.log(map.has('sedt'));
-console.log(map.remove('ps5'));
+console.log(map.length());
+map.clear();
 map.print();
+console.log(map.length());
