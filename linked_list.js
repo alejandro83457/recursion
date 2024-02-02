@@ -5,15 +5,19 @@ class Node {
     this.#value = value;
     this.#nextNode = null;
   }
+
   get value() {
     return this.#value;
   }
+
   get nextNode() {
     return this.#nextNode;
   }
+
   setValue(value) {
     this.#value = value;
   }
+
   setNextNode(nextNode) {
     this.#nextNode = nextNode;
   }
@@ -24,6 +28,7 @@ class LinkedList {
   constructor() {
     this.#head = null;
   }
+
   append(value) {
     let node = new Node(value);
     let currNode = this.#head;
@@ -36,12 +41,14 @@ class LinkedList {
     while (currNode.nextNode) currNode = currNode.nextNode;
     currNode.setNextNode(node);
   }
+
   prepend(value) {
     let node = new Node(value);
     // check if head is not empty
     if (this.#head) node.setNextNode(this.#head);
     this.#head = node;
   }
+
   get size() {
     let count = 0;
     let curr = this.#head;
@@ -51,11 +58,13 @@ class LinkedList {
     }
     return count;
   }
+
   head() {
     // if head is not empty
     if (this.#head) return this.#head.value;
     else return null;
   }
+
   tail() {
     // if head is empty
     if (!this.#head) return null;
@@ -66,6 +75,7 @@ class LinkedList {
     }
     return curr.value;
   }
+
   at(index) {
     // if index is out of range
     if (index > this.size - 1) return null;
@@ -76,6 +86,7 @@ class LinkedList {
     }
     return curr.value;
   }
+
   pop() {
     // if head is empty
     if (!this.#head) return;
@@ -93,6 +104,7 @@ class LinkedList {
     }
     last.setNextNode(null);
   }
+
   contains(value) {
     // return if head is empty
     if (!this.#head) return false;
@@ -103,6 +115,7 @@ class LinkedList {
     }
     return false;
   }
+
   find(value) {
     // return if head is empty
     if (!this.#head) return null;
@@ -115,6 +128,7 @@ class LinkedList {
     }
     return null;
   }
+
   toString() {
     let str = '';
     let currNode = this.#head;
@@ -125,9 +139,10 @@ class LinkedList {
     str += 'null';
     return str;
   }
+
   insertAt(value, index) {
     // check if index is invalid
-    if (index < 0) return;
+    if (index < 0 || index > this.size) return;
     // add to the head if head is empty
     if (!this.#head) {
       this.#head = new Node(value);
@@ -139,26 +154,37 @@ class LinkedList {
       return;
     }
     // append if index is size
-    if (index >= this.size) {
+    if (index === this.size) {
       this.append(value);
       return;
     }
     // we stop one before the correct index
     let curr = this.#head;
-    // while (curr) {
-    //   if (index === 1) {
-    //     let node = new Node(value);
-    //     node.setNextNode(curr.nextNode);
-    //     curr.setNextNode(node);
-    //     return;
-    //   }
-    //   curr = curr.nextNode;
-    //   index--;
-    // }
     while (index-- !== 1) curr = curr.nextNode;
     let node = new Node(value);
     node.setNextNode(curr.nextNode);
     curr.setNextNode(node);
+  }
+
+  removeAt(index) {
+    // check if index is valid
+    if (index < 0 || index >= this.size) return;
+    // return if empty
+    if (!this.#head) return;
+    // if it's the first node
+    if (index === 0) {
+      this.#head = this.#head.nextNode;
+      return;
+    }
+    // pop if index is last node
+    if (index === this.size - 1) {
+      this.pop();
+      return;
+    }
+    // everything else
+    let curr = this.#head;
+    while (index-- !== 1) curr = curr.nextNode;
+    curr.setNextNode(curr.nextNode.nextNode);
   }
 }
 
@@ -167,7 +193,7 @@ list.append(1);
 list.append(2);
 list.append(3);
 list.append(4);
-list.insertAt(5, 6);
-list.insertAt(0, 2);
+console.log(list.toString());
 
+list.removeAt(3);
 console.log(list.toString());
