@@ -40,6 +40,15 @@ class HashMap {
     return this.#map[index].key === key ? true : false;
   }
 
+  remove(key) {
+    let index = this.hash(key) % this.#map.length;
+    if (this.#map[index]) {
+      this.#map[index] = undefined;
+      return true;
+    }
+    return false;
+  }
+
   #increaseCap() {
     let temp = Array(this.#map.length * 2);
     for (let el of this.#map) {
@@ -77,18 +86,20 @@ map.set('road', 11);
 map.set('xbox', 12);
 map.set('ps5', 13);
 map.set('monitor', 14);
-map.set('laptop', 15);
-map.set('keyboard', 16);
-map.set('door', 17);
-map.set('chair', 18);
-map.set('closet', 19);
-map.set('sarad', 20);
-map.set('aledx', 21);
-map.set('tesdt', 22);
-map.set('sedt', 23);
-map.set('rodck', 24);
-map.set('padper', 25);
+// map.set('laptop', 15);
+// map.set('keyboard', 16);
+// map.set('door', 17);
+// map.set('chair', 18);
+// map.set('closet', 19);
+// map.set('sarad', 20);
+// map.set('aledx', 21);
+// map.set('tesdt', 22);
+// map.set('sedt', 23);
+// map.set('rodck', 24);
+// map.set('padper', 25);
 
 map.print();
 console.log(map.get('sedt'));
 console.log(map.has('sedt'));
+console.log(map.remove('ps5'));
+map.print();
