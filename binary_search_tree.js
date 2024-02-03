@@ -90,6 +90,51 @@ class Tree {
     return root;
   }
 
+  // -----DELETE VALUE-----
+  // Implementation taken from:
+  // https://www.geeksforgeeks.org/deletion-in-binary-search-tree/
+  delete(value) {
+    console.log(`Deleting ${value}`);
+    this.#root = this.deleteHelper(value, this.#root);
+  }
+  deleteHelper(value, root) {
+    if (root == null) return root;
+    if (root.data > value) {
+      root.setLeft(this.deleteHelper(value, root.left));
+      return root;
+    } else if (root.data < value) {
+      root.setRight(this.deleteHelper(value, root.right));
+      return root;
+    }
+
+    if (root.left == null) {
+      let temp = root.right;
+      // root = null;
+      return temp;
+    } else if (root.right == null) {
+      let temp = root.left;
+      // root = null;
+      return temp;
+    } else {
+      let succParent = root;
+      let succ = root.right;
+      while (succ.left != null) {
+        succParent = succ;
+        succ = succ.left;
+      }
+
+      if (succParent != root) {
+        succParent.setLeft(succ.right);
+      } else {
+        succParent.setRight(succ.right);
+      }
+
+      root.setData(succ.data);
+      // succ = null;
+      return root;
+    }
+  }
+
   // -----VISUALIZATION-----
   // used to visualize the BST
   // provided by The Odin Project
@@ -111,8 +156,8 @@ class Tree {
   }
 }
 
-// let tree = new Tree([1, 2, 3, 4, 5, 7, 8, 9, 10]);
-let tree = new Tree();
+let tree = new Tree([1, 2, 3, 4, 5, 7, 8, 9, 10]);
+// let tree = new Tree();
 tree.prettyPrint(tree.root);
-tree.insert(6);
+tree.delete(10);
 tree.prettyPrint(tree.root);
