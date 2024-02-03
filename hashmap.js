@@ -59,6 +59,22 @@ class HashMap {
     this.#cap = 0;
   }
 
+  keys() {
+    let keysArr = [];
+    for (let el of this.#map) {
+      if (el) keysArr.push(el.key);
+    }
+    return keysArr;
+  }
+
+  values() {
+    let valsArr = [];
+    for (let el of this.#map) {
+      if (el) valsArr.push(el.value);
+    }
+    return valsArr;
+  }
+
   #increaseCap() {
     let temp = Array(this.#map.length * 2);
     for (let el of this.#map) {
@@ -109,7 +125,5 @@ map.set('monitor', 14);
 // map.set('padper', 25);
 
 map.print();
-console.log(map.length());
-map.clear();
-map.print();
-console.log(map.length());
+console.log(map.keys());
+console.log(map.values());
