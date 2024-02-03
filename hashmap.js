@@ -75,6 +75,14 @@ class HashMap {
     return valsArr;
   }
 
+  entries() {
+    let entries = [];
+    for (let el of this.#map) {
+      if (el) entries.push([el.key, el.value]);
+    }
+    return entries;
+  }
+
   #increaseCap() {
     let temp = Array(this.#map.length * 2);
     for (let el of this.#map) {
@@ -127,3 +135,4 @@ map.set('monitor', 14);
 map.print();
 console.log(map.keys());
 console.log(map.values());
+console.log(map.entries());
