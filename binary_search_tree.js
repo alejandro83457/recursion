@@ -145,6 +145,30 @@ class Tree {
     return false;
   }
 
+  // -----LEVEL ORDER IMPLEMENTATION-----
+  levelOrder(callback = null) {
+    // exit if empty
+    if (this.#root == null) return [];
+
+    let arr = [];
+    let queue = [];
+    let curr = this.#root;
+
+    while (curr) {
+      // push discovered nodes to queue
+      if (curr.left) queue.push(curr.left);
+      if (curr.right) queue.push(curr.right);
+
+      // call callback if it exists
+      if (callback) arr.push(callback(curr.data));
+      else arr.push(curr.data);
+
+      // pop element next in queue
+      curr = queue.shift();
+    }
+    return arr;
+  }
+
   // -----VISUALIZATION-----
   // used to visualize the BST
   // provided by The Odin Project
@@ -168,4 +192,4 @@ class Tree {
 
 let tree = new Tree([1, 2, 3, 4, 5, 7, 8, 9, 10]);
 tree.prettyPrint(tree.root);
-console.log(tree.find(5));
+console.log(tree.levelOrder());
