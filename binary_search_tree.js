@@ -289,8 +289,12 @@ class Tree {
 
 let tree = new Tree([1, 2, 3, 4, 5, 7, 8, 9, 10]);
 tree.insert(11);
+tree.insert(12);
+tree.insert(13);
+tree.insert(0);
+tree.insert(-1);
 tree.prettyPrint();
-console.log(tree.isBalanced());
+console.log('Is it balanced:', tree.isBalanced());
 tree.rebalance();
 tree.prettyPrint();
-console.log(tree.isBalanced());
+console.log('Is it balanced:', tree.isBalanced());
