@@ -109,11 +109,9 @@ class Tree {
 
     if (root.left == null) {
       let temp = root.right;
-      // root = null;
       return temp;
     } else if (root.right == null) {
       let temp = root.left;
-      // root = null;
       return temp;
     } else {
       let succParent = root;
@@ -123,16 +121,28 @@ class Tree {
         succ = succ.left;
       }
 
-      if (succParent != root) {
-        succParent.setLeft(succ.right);
-      } else {
-        succParent.setRight(succ.right);
-      }
+      if (succParent != root) succParent.setLeft(succ.right);
+      else succParent.setRight(succ.right);
 
       root.setData(succ.data);
-      // succ = null;
       return root;
     }
+  }
+
+  // -----FIND IMPLEMENTATION-----
+  find(value) {
+    // if BST is empty.
+    if (this.#root == null) return false;
+
+    let curr = this.#root;
+    while (curr) {
+      if (curr.data == value) return true;
+
+      // move left or right
+      if (curr.data > value) curr = curr.left;
+      else curr = curr.right;
+    }
+    return false;
   }
 
   // -----VISUALIZATION-----
@@ -157,7 +167,5 @@ class Tree {
 }
 
 let tree = new Tree([1, 2, 3, 4, 5, 7, 8, 9, 10]);
-// let tree = new Tree();
 tree.prettyPrint(tree.root);
-tree.delete(10);
-tree.prettyPrint(tree.root);
+console.log(tree.find(5));
