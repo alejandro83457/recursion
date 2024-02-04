@@ -67,13 +67,11 @@ class Tree {
 
   // -----INSERT VALUE-----
   insert(value) {
-    console.log(`Inserting ${value}`);
     this.#root = this.insertHelper(value, this.#root);
   }
   insertHelper(value, root) {
     // base case will add node until it reaches correct leaf
     if (root == null) {
-      console.log(`Current node is null`);
       root = new Node(value);
       root.setLeft(null);
       root.setRight(null);
@@ -81,10 +79,8 @@ class Tree {
     }
     // choose left or right tree depending on less/greater
     if (value < root.data) {
-      console.log(`${value} is less than ${root.data}`);
       root.setLeft(this.insertHelper(value, root.left));
     } else if (value > root.data) {
-      console.log(`${value} is greater than ${root.data}`);
       root.setRight(this.insertHelper(value, root.right));
     }
     return root;
@@ -164,15 +160,116 @@ class Tree {
       else arr.push(curr.data);
 
       // pop element next in queue
+      // keep in mind that shift() call on an empty
+      // array will return undefined and eval
+      // the while loop arg to false
+      // taking advantage of js quirk
       curr = queue.shift();
     }
     return arr;
   }
 
+  // -----IN ORDER IMPLEMENTATION-----
+  inOrder(callback = null) {
+    // exit if empty
+    if (this.#root == null) return [];
+
+    let arr = [];
+    return this.inOrderHelper(this.#root, arr, callback);
+  }
+  inOrderHelper(root, arr, callback) {
+    if (root == null) return;
+    // note we're making sure we traverse the left before
+    // doing anything with the data or the right
+    this.inOrderHelper(root.left, arr, callback);
+
+    // call callback if it exists
+    if (callback) arr.push(callback(root.data));
+    else arr.push(root.data);
+
+    // traverse right
+    this.inOrderHelper(root.right, arr, callback);
+
+    return arr;
+  }
+
+  // -----PRE ORDER IMPLEMENTATION-----
+  preOrder(callback = null) {
+    // exit if empty
+    if (this.#root == null) return [];
+
+    let arr = [];
+    return this.preOrderHelper(this.#root, arr, callback);
+  }
+  preOrderHelper(root, arr, callback) {
+    if (root == null) return;
+
+    // process data and call callback before left and right
+    if (callback) arr.push(callback(root.data));
+    else arr.push(root.data);
+
+    // left then right after processing data
+    this.preOrderHelper(root.left, arr, callback);
+    this.preOrderHelper(root.right, arr, callback);
+
+    return arr;
+  }
+
+  // -----POST ORDER IMPLEMENTATION-----
+  postOrder(callback = null) {
+    // exit if empty
+    if (this.#root == null) return [];
+
+    let arr = [];
+    return this.postOrderHelper(this.#root, arr, callback);
+  }
+  postOrderHelper(root, arr, callback) {
+    if (root == null) return;
+
+    // process left and right before data
+    this.postOrderHelper(root.left, arr, callback);
+    this.postOrderHelper(root.right, arr, callback);
+
+    // process data after let and right
+    if (callback) arr.push(callback(root.data));
+    else arr.push(root.data);
+
+    return arr;
+  }
+
+  // -----HEIGHT IMPLEMENTATION-----
+  height(root = this.#root) {
+    if (root == null) return 0;
+    return Math.max(this.height(root.left), this.height(root.right)) + 1;
+  }
+
+  // -----IS-BALANCED IMPLEMENTATION-----
+  isBalanced(root = this.#root) {
+    if (root == null) return true;
+
+    let leftHeight = this.height(root.left);
+    let rightHeight = this.height(root.right);
+
+    if (
+      Math.abs(leftHeight - rightHeight) <= 1 &&
+      this.isBalanced(root.left) &&
+      this.isBalanced(root.right)
+    )
+      return true;
+    else return false;
+  }
+
+  // -----REBALANCE IMPLEMENTATION-----
+  rebalance() {
+    if (this.#root == null) return;
+    let arr = this.inOrder();
+    this.#root = this.buildTree(arr, 0, arr.length - 1);
+  }
+
   // -----VISUALIZATION-----
   // used to visualize the BST
   // provided by The Odin Project
-  prettyPrint(node, prefix = '', isLeft = true) {
+  prettyPrint(node = this.#root, prefix = '', isLeft = true) {
     if (node === null) {
       return;
     }
@@ -191,5 +288,9 @@ class Tree {
 }
 
 let tree = new Tree([1, 2, 3, 4, 5, 7, 8, 9, 10]);
-tree.prettyPrint(tree.root);
-console.log(tree.levelOrder());
+tree.insert(11);
+tree.prettyPrint();
+console.log(tree.isBalanced());
+tree.rebalance();
+tree.prettyPrint();
+console.log(tree.isBalanced());
