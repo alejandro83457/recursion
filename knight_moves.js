@@ -19,8 +19,8 @@ function move(moveX, moveY) {
     let yF = y + moveY;
 
     // check if coords are invalid
-    if (xF < 0) return false;
-    if (yF < 0) return false;
+    if (xF < 0 || xF > 7) return false;
+    if (yF < 0 || yF > 7) return false;
 
     // check if spot has been discovered
     if (board[xF][yF] > 0 || board[xF][yF] == -1) return false;
@@ -41,6 +41,7 @@ const moveDownRight = move(2, 1);
 const moveRightUp = move(-1, 2);
 const moveRightDown = move(1, 2);
 
+// makes it easier to call all moves
 let allMoves = [
   moveUpLeft,
   moveUpRight,
@@ -55,24 +56,55 @@ let allMoves = [
 function knightMoves([x, y], [xF, yF]) {
   let queue = [];
   let positions = [];
+  let path = [];
 
+  // mark the start
   board[x][y] = 2;
+  // add the start pos to queue
   queue.push([x, y]);
+
   let flag = true;
   while (flag) {
-    let currentPos = queue.shift();
-    allMoves.forEach((move) => {
+    let currentPos = queue.shift(); // pop the el from queue
+    // try all 8 moves
+    for (let move of allMoves) {
       let nextPos = move(currentPos);
+      // check if move was valid
       if (nextPos) {
-        if (JSON.stringify(nextPos) === JSON.stringify([xF, yF])) flag = false;
-        queue.push(nextPos);
-        board[nextPos[0]][nextPos[1]] = 1;
-        positions.push({ currentPos, nextPos });
+        queue.push(nextPos); // add it to queue
+        board[nextPos[0]][nextPos[1]] = 1; // mark pos as discovered
+        positions.push([currentPos, nextPos]); // log move
+        // check if move is the destination
+        if (JSON.stringify(nextPos) === JSON.stringify([xF, yF])) {
+          flag = false;
+          break;
+        }
       }
-    });
+    }
   }
-  console.log(positions);
+  // console.log(positions);
+
+  flag = true;
+  // push the destination pos
+  path.push(positions[positions.length - 1][1]);
+  while (flag) {
+    for (let set of positions) {
+      // if we found the next step backwards
+      if (JSON.stringify(set[1]) === JSON.stringify(path[0])) {
+        path.unshift(set[0]);
+        continue;
+      }
+      // if we found the very first pos
+      if (JSON.stringify(path[0]) === JSON.stringify([x, y])) {
+        flag = false;
+        break;
+      }
+    }
+  }
+
+  // print path
+  path.forEach((step) => console.log(step));
 }
 
-knightMoves([3, 3], [4, 3]);
-printBoard();
+knightMoves([4, 5], [1, 1]);
+// printBoard();
